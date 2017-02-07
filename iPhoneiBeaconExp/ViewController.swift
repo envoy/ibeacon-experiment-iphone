@@ -18,6 +18,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    @IBAction func monitorButtonTapped(_ sender: Any) {
         locationManager = CLLocationManager()
         locationManager.delegate = self
 
@@ -29,21 +38,26 @@ class ViewController: UIViewController {
         locationManager.startMonitoring(for: region)
         print("Start monitoring region \(region)")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
 
 extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("did enter region \(region)")
+        locationManager.startRangingBeacons(in: self.region)
+        //locationManager.startRangingBeacons(in: self.region)
     }
 
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("did exit region \(region)")
+        //locationManager.stopRangingBeacons(in: self.region)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+        print("Did range beacon \(beacons)")
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("!!!! failed, error=\(error)")
     }
 }
