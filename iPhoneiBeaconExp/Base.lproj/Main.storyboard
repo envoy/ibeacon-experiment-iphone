@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,23 +23,38 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyv-1R-m9k">
-                                <rect key="frame" x="116.5" y="301.5" width="141" height="63"/>
+                                <rect key="frame" x="117" y="302" width="141" height="63"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="42"/>
                                 <state key="normal" title="Monitor"/>
                                 <connections>
                                     <action selector="monitorButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="op9-dG-tUw"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FK3-GJ-YhU">
+                                <rect key="frame" x="26" y="379" width="323" height="268"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="FK3-GJ-YhU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="S53-Kr-h1W"/>
                             <constraint firstItem="kyv-1R-m9k" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ayh-HU-lP8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FK3-GJ-YhU" secondAttribute="trailing" constant="10" id="dcb-Yg-k2v"/>
                             <constraint firstItem="kyv-1R-m9k" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="fFR-1a-1tT"/>
+                            <constraint firstItem="FK3-GJ-YhU" firstAttribute="top" secondItem="kyv-1R-m9k" secondAttribute="bottom" constant="14.5" id="shc-xX-58U"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="FK3-GJ-YhU" secondAttribute="bottom" constant="20" id="v4K-PH-YQd"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="msgLog" destination="FK3-GJ-YhU" id="0KW-gM-96s"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="36" y="38.23088455772114"/>
         </scene>
     </scenes>
 </document>

@@ -7,14 +7,30 @@
 //
 
 import UIKit
+import CoreLocation
+import CoreBluetooth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
+    var locationManager: CLLocationManager!
+    var region: CLBeaconRegion!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+
+        let uuid = UUID(uuidString: "5E759524-B7F2-4F3A-81E6-73B2F9728AAB")!
+        region = CLBeaconRegion(proximityUUID: uuid, major: 1, minor: 1, identifier: "ibeacon-test.envoy.com")
+
+        locationManager.startMonitoring(for: region)
+
+        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/app-launched")!)
+        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
+            print("@@@@@@ \(data), \(resp), \(error)")
+        }
+        task.resume()
         // Override point for customization after application launch.
         return true
     }
@@ -40,7 +56,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
+
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("did enter region \(region)")
+        locationManager.startRangingBeacons(in: self.region)
+
+        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/enter")!)
+        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
+            print("@@@@@@ \(data), \(resp), \(error)")
+        }
+        task.resume()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("did exit region \(region)")
+        locationManager.stopRangingBeacons(in: self.region)
+
+        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/exit")!)
+        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
+            print("@@@@@@ \(data), \(resp), \(error)")
+        }
+        task.resume()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+        print("Did range beacon \(beacons)")
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("!!!! failed, error=\(error)")
+    }
+}
