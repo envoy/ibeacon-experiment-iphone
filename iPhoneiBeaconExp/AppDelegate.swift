@@ -90,3 +90,18 @@ extension AppDelegate: CLLocationManagerDelegate {
         print("!!!! failed, error=\(error)")
     }
 }
+
+extension AppDelegate {
+    func log(_ message: String) {
+        let defaults = UserDefaults.standard
+        let msgData = defaults.data(forKey: "log_msg") ?? Data()
+        var msgs = String(data: msgData, encoding: .utf8) ?? ""
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZZZ"
+        dateFormatter.locale = Locale.current
+        msgs.append("\(dateFormatter.string(from: date)) \(message)\n")
+        defaults.set(msgs.data(using: .utf8), forKey: "log_msg")
+        defaults.synchronize()
+    }
+}
