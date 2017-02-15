@@ -20,6 +20,14 @@ class ViewController: UIViewController {
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let defaults = UserDefaults.standard
+        let msgData = defaults.data(forKey: "log_msg") ?? Data()
+        let msgs = String(data: msgData, encoding: .utf8) ?? ""
+        msgLog.text = msgs
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

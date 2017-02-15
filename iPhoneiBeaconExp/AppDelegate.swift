@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         locationManager.startMonitoring(for: region)
 
-        log("app launched")
+        log("app launched, monitoring \(region!)")
         // Override point for customization after application launch.
         return true
     }
