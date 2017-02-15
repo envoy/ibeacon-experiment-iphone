@@ -26,11 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         locationManager.startMonitoring(for: region)
 
-        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/app-launched")!)
-        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
-            print("@@@@@@ \(data), \(resp), \(error)")
-        }
-        task.resume()
+        log("app launched")
         // Override point for customization after application launch.
         return true
     }
@@ -38,48 +34,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        log("app will resign active")
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        log("app did enter background")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        log("app will enter foreground")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        log("app did become active")
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        log("app will terminate")
     }
 }
-
 
 extension AppDelegate: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("did enter region \(region)")
         locationManager.startRangingBeacons(in: self.region)
-
-        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/enter")!)
-        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
-            print("@@@@@@ \(data), \(resp), \(error)")
-        }
-        task.resume()
+        log("did enter region \(region)")
     }
 
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("did exit region \(region)")
         locationManager.stopRangingBeacons(in: self.region)
-
-        let request = URLRequest(url: URL(string: "http://10.1.1.121:5000/exit")!)
-        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
-            print("@@@@@@ \(data), \(resp), \(error)")
-        }
-        task.resume()
+        log("did exit region \(region)")
     }
 
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
