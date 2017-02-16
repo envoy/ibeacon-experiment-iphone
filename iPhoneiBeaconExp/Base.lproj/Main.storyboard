@@ -41,7 +41,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log Sync: F3DEBEB8-D084-4C3A-9557-F3372D0B1A59" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AQd-g8-jmm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log Sync: N/A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AQd-g8-jmm">
                                 <rect key="frame" x="36" y="80" width="303" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -73,6 +73,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="logSyncLabel" destination="AQd-g8-jmm" id="kY7-7a-cxD"/>
                         <outlet property="signupButton" destination="FjV-9r-pzW" id="rrh-hN-UQt"/>
                         <outlet property="userIDLabel" destination="yGK-MW-PxX" id="3bx-J8-sgX"/>
                         <outlet property="usernameTextField" destination="8rS-7M-ntF" id="0HB-wg-9Tg"/>

@@ -15,11 +15,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var userIDLabel: UILabel!
+    @IBOutlet weak var logSyncLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         updateUI()
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: "info-update"), object: nil, queue: nil) { _ in
+            self.updateUI()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,10 +39,16 @@ class ViewController: UIViewController {
             userIDLabel.text = "User ID: \(userID)"
             usernameTextField.isHidden = true
             signupButton.isHidden = true
+            logSyncLabel.isHidden = false
         } else {
             userIDLabel.isHidden = true
             usernameTextField.isHidden = false
             signupButton.isHidden = false
+            logSyncLabel.isHidden = true
+        }
+
+        if let lastID = defaults.value(forKey: "last_log_sync_id") as? String {
+            logSyncLabel.text = "Log sync: \(lastID)"
         }
     }
 

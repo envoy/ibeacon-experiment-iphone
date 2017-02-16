@@ -130,6 +130,8 @@ extension AppDelegate {
             defaults.set(msgs.data(using: .utf8), forKey: "log_msg")
             defaults.set(true, forKey: "log_msg_updated")
             defaults.synchronize()
+
+            self.uploadLog()
         }
     }
 
@@ -143,7 +145,10 @@ extension AppDelegate {
             print("Log not updated, skip log uploading")
             return
         }
-        guard let msgData = defaults.data(forKey: "log_msg") else {
+        guard
+            let msgData = defaults.data(forKey: "log_msg"),
+            msgData.count > 0
+        else {
             print("No message, skip log uploading")
             return
         }
@@ -161,7 +166,16 @@ extension AppDelegate {
                 return
             }
             let lastID = String(data: data!, encoding: .utf8)!
+            guard lastID.characters.count > 0 else {
+                print("No updates")
+                return
+            }
             print("Uploaded logs with last_id=\(lastID)")
+            defaults.set(lastID, forKey: "last_log_sync_id")
+            defaults.synchronize()
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "info-update"), object: nil)
+            }
             self.purgeLogs(lastID: lastID)
         }
         task.resume()
@@ -174,18 +188,14 @@ extension AppDelegate {
             let msgs = String(data: msgData, encoding: .utf8) ?? ""
 
             let lines = msgs.components(separatedBy: "\n")
+                .filter { $0.characters.count > 0 }
             guard lines.count > 0 else {
                 print("No log messages")
                 return
             }
             
             var remainLines: [String] = []
-            var originalLogs = 0
             for line in lines.reversed() {
-                guard line.characters.count > 0 else {
-                    continue
-                }
-                originalLogs += 1
                 let json = try! JSONSerialization.jsonObject(
                     with: line.data(using: .utf8)!,
                     options: .allowFragments
@@ -198,7 +208,7 @@ extension AppDelegate {
             let newMsgs = remainLines.joined(separator: "\n")
             defaults.set(newMsgs.data(using: .utf8), forKey: "log_msg")
             defaults.synchronize()
-            print("Purged logs, lastID=\(lastID), originalLogs=\(originalLogs), newLogs=\(remainLines.count)")
+            print("Purged logs, lastID=\(lastID), originalLogs=\(lines.count), remainLogs=\(remainLines.count)")
         }
     }
 }
