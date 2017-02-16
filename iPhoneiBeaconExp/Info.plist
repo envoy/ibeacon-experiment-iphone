@@ -36,5 +36,10 @@
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Exp</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

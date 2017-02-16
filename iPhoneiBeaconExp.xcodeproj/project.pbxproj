@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D83A600F1E56504E00FCB41B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83A600E1E56504E00FCB41B /* Utils.swift */; };
 		D8D2F5501E4A742600835D01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2F54F1E4A742600835D01 /* AppDelegate.swift */; };
 		D8D2F5521E4A742600835D01 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D2F5511E4A742600835D01 /* ViewController.swift */; };
 		D8D2F5551E4A742600835D01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D2F5531E4A742600835D01 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D83A600E1E56504E00FCB41B /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D8D2F54C1E4A742600835D01 /* iPhoneiBeaconExp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhoneiBeaconExp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8D2F54F1E4A742600835D01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8D2F5511E4A742600835D01 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				D8D2F54F1E4A742600835D01 /* AppDelegate.swift */,
 				D8D2F5511E4A742600835D01 /* ViewController.swift */,
+				D83A600E1E56504E00FCB41B /* Utils.swift */,
 				D8D2F5531E4A742600835D01 /* Main.storyboard */,
 				D8D2F5561E4A742600835D01 /* Assets.xcassets */,
 				D8D2F5581E4A742600835D01 /* LaunchScreen.storyboard */,
@@ -139,6 +142,7 @@
 			files = (
 				D8D2F5521E4A742600835D01 /* ViewController.swift in Sources */,
 				D8D2F5501E4A742600835D01 /* AppDelegate.swift in Sources */,
+				D83A600F1E56504E00FCB41B /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +304,7 @@
 				D8D2F5601E4A742600835D01 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
