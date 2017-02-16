@@ -126,7 +126,7 @@ extension AppDelegate {
             let jsonString = String(data: json, encoding: .utf8)!
             print(jsonString)
 
-            msgs.append(jsonString)
+            msgs.append(jsonString + "\n")
             defaults.set(msgs.data(using: .utf8), forKey: "log_msg")
             defaults.set(true, forKey: "log_msg_updated")
             defaults.synchronize()
@@ -151,11 +151,11 @@ extension AppDelegate {
         var bodyData = "\(userID)\n".data(using: .utf8)
         bodyData?.append(msgData)
 
-        var request = URLRequest(url: Utils.apiURL.appendingPathComponent("users"))
+        var request = URLRequest(url: Utils.apiURL.appendingPathComponent("upload-log"))
         request.addValue("binary/octet-stream", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
         request.httpBody = bodyData
-        URLSession.shared.dataTask(with: request) { (data, resp, error) in
+        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
             if let error = error {
                 print("Failed to upload logs, error=\(error)")
                 return
@@ -164,5 +164,6 @@ extension AppDelegate {
             print("Uploaded logs with last_id=\(lastID)")
             // TODO: trim the log before the last ID, as they are uploaded already
         }
+        task.resume()
     }
 }

@@ -72,4 +72,9 @@ class ViewController: UIViewController {
         }
         task.resume()
     }
+
+    @IBAction func uploadLogButtonTapped(_ sender: Any) {
+        let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.uploadLog()
+    }
 }

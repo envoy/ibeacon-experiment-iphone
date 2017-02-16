@@ -47,14 +47,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CIV-Sv-RYE">
+                                <rect key="frame" x="36" y="617" width="75" height="30"/>
+                                <state key="normal" title="Upload log"/>
+                                <connections>
+                                    <action selector="uploadLogButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GHS-GE-V7b"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="AQd-g8-jmm" firstAttribute="trailing" secondItem="8rS-7M-ntF" secondAttribute="trailing" id="ANv-nN-KcX"/>
                             <constraint firstItem="8rS-7M-ntF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="CLN-rj-Znv"/>
                             <constraint firstItem="AQd-g8-jmm" firstAttribute="top" secondItem="8rS-7M-ntF" secondAttribute="bottom" constant="10" id="EdU-Vc-7OR"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CIV-Sv-RYE" secondAttribute="bottom" constant="20" id="LOq-hc-Ps6"/>
                             <constraint firstItem="FjV-9r-pzW" firstAttribute="top" secondItem="8rS-7M-ntF" secondAttribute="bottom" constant="20" id="MX8-mA-JPr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yGK-MW-PxX" secondAttribute="trailing" constant="20" id="NTh-tG-f8N"/>
+                            <constraint firstItem="CIV-Sv-RYE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="PR5-fJ-6JC"/>
                             <constraint firstItem="yGK-MW-PxX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="Zbh-8k-FwT"/>
                             <constraint firstItem="8rS-7M-ntF" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="cDE-Ax-gXN"/>
                             <constraint firstItem="FjV-9r-pzW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="cJz-rx-j7l"/>
