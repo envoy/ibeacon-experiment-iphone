@@ -160,10 +160,45 @@ extension AppDelegate {
                 print("Failed to upload logs, error=\(error)")
                 return
             }
-            let lastID = String(data: data!, encoding: .utf8)
+            let lastID = String(data: data!, encoding: .utf8)!
             print("Uploaded logs with last_id=\(lastID)")
-            // TODO: trim the log before the last ID, as they are uploaded already
+            self.purgeLogs(lastID: lastID)
         }
         task.resume()
+    }
+
+    func purgeLogs(lastID: String) {
+        DispatchQueue.main.async {
+            let defaults = UserDefaults.standard
+            let msgData = defaults.data(forKey: "log_msg") ?? Data()
+            let msgs = String(data: msgData, encoding: .utf8) ?? ""
+
+            let lines = msgs.components(separatedBy: "\n")
+            guard lines.count > 0 else {
+                print("No log messages")
+                return
+            }
+            
+            var remainLines: [String] = []
+            var originalLogs = 0
+            for line in lines.reversed() {
+                guard line.characters.count > 0 else {
+                    continue
+                }
+                originalLogs += 1
+                let json = try! JSONSerialization.jsonObject(
+                    with: line.data(using: .utf8)!,
+                    options: .allowFragments
+                ) as! [String: String]
+                if json["id"]! == lastID {
+                    break
+                }
+                remainLines.insert(line, at: 0)
+            }
+            let newMsgs = remainLines.joined(separator: "\n")
+            defaults.set(newMsgs.data(using: .utf8), forKey: "log_msg")
+            defaults.synchronize()
+            print("Purged logs, lastID=\(lastID), originalLogs=\(originalLogs), newLogs=\(remainLines.count)")
+        }
     }
 }
