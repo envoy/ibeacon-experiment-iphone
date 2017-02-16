@@ -15,14 +15,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var userIDLabel: UILabel!
-    
-    static let apiURL: URL = {
-        let env = ProcessInfo.processInfo.environment
-        if let url = env["API_URL"] {
-            return URL(string: url)!
-        }
-        return URL(string: "https://ibeacon-experiment-api.herokuapp.com")!
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +48,7 @@ class ViewController: UIViewController {
         guard userName.characters.count > 0 else {
             return
         }
-        var request = URLRequest(url: ViewController.apiURL.appendingPathComponent("users"))
+        var request = URLRequest(url: Utils.apiURL.appendingPathComponent("users"))
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         request.httpBody = Utils.urlEncode(dict: [

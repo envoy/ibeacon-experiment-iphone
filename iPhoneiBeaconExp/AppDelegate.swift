@@ -14,6 +14,7 @@ import CoreBluetooth
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var locationManager: CLLocationManager!
+    var cbManager: CBCentralManager!
     var region: CLBeaconRegion!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -21,12 +22,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
 
+        cbManager = CBCentralManager(delegate: self, queue: DispatchQueue.main)
+
         let uuid = UUID(uuidString: "5E759524-B7F2-4F3A-81E6-73B2F9728AAB")!
         region = CLBeaconRegion(proximityUUID: uuid, major: 1, minor: 1, identifier: "ibeacon-test.envoy.com")
 
         locationManager.startMonitoring(for: region)
 
-        log("app-launch", "app launched, monitoring \(region!)")
+        let osVersion = UIDevice.current.systemVersion
+        log("app-launch", "app launched, monitoring \(region!), os_version=\(osVersion)")
         // Override point for customization after application launch.
         return true
     }
@@ -69,6 +73,40 @@ extension AppDelegate: CLLocationManagerDelegate {
         print("did exit region \(region)")
         log("did-exit-region", "did exit region \(region)")
     }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways:
+            log("cl-authorized-always", "CoreLocation authorized always")
+        case .authorizedWhenInUse:
+            log("cl-authorized-when-in-use", "CoreLocation authorized when-in-use")
+        case .denied:
+            log("cl-deined", "CoreLocation denied")
+        case .notDetermined:
+            log("cl-not-determined", "CoreLocation not determined")
+        case .restricted:
+            log("cl-restricted", "CoreLocation restricted")
+        }
+    }
+}
+
+extension AppDelegate: CBCentralManagerDelegate {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case .poweredOn:
+            log("cb-power-on", "CoreBluetooth power on")
+        case .poweredOff:
+            log("cb-power-off", "CoreBluetooth power off")
+        case .resetting:
+            log("cb-power-resetting", "CoreBluetooth resetting")
+        case .unauthorized:
+            log("cb-power-unauthorized", "CoreBluetooth unauthorized")
+        case .unsupported:
+            log("cb-power-unsupported", "CoreBluetooth unsupported")
+        case .unknown:
+            log("cb-power-unknown", "CoreBluetooth unknown")
+        }
+    }
 }
 
 extension AppDelegate {
@@ -96,6 +134,35 @@ extension AppDelegate {
     }
 
     func uploadLog() {
-        //URLSession.shared.dataTask(with: <#T##URLRequest#>, completionHandler: <#T##(Data?, URLResponse?, Error?) -> Void#>)
+        let defaults = UserDefaults.standard
+        guard let userID = defaults.value(forKey: "user_id") as? String else {
+            print("User not signed up yet, skip log uploading")
+            return
+        }
+        guard defaults.bool(forKey: "log_msg_updated") else {
+            print("Log not updated, skip log uploading")
+            return
+        }
+        guard let msgData = defaults.data(forKey: "log_msg") else {
+            print("No message, skip log uploading")
+            return
+        }
+
+        var bodyData = "\(userID)\n".data(using: .utf8)
+        bodyData?.append(msgData)
+
+        var request = URLRequest(url: Utils.apiURL.appendingPathComponent("users"))
+        request.addValue("binary/octet-stream", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "PUT"
+        request.httpBody = bodyData
+        URLSession.shared.dataTask(with: request) { (data, resp, error) in
+            if let error = error {
+                print("Failed to upload logs, error=\(error)")
+                return
+            }
+            let lastID = String(data: data!, encoding: .utf8)
+            print("Uploaded logs with last_id=\(lastID)")
+            // TODO: trim the log before the last ID, as they are uploaded already
+        }
     }
 }

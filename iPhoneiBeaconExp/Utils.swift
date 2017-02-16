@@ -9,6 +9,14 @@
 import Foundation
 
 struct Utils {
+    static let apiURL: URL = {
+        let env = ProcessInfo.processInfo.environment
+        if let url = env["API_URL"] {
+            return URL(string: url)!
+        }
+        return URL(string: "https://ibeacon-experiment-api.herokuapp.com")!
+    }()
+    
     static func urlEncode(dict: [String: String]) -> String {
         return dict
             .map { (key, value) -> String in
