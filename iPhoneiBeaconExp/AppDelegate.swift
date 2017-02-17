@@ -180,9 +180,9 @@ extension AppDelegate {
                     return
                 }
                 print("Uploaded logs with last_id=\(lastID)")
-                defaults.set(lastID, forKey: "last_log_sync_id")
-                defaults.synchronize()
                 DispatchQueue.main.async {
+                    defaults.set(lastID, forKey: "last_log_sync_id")
+                    defaults.synchronize()
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "info-update"), object: nil)
                 }
                 self.purgeLogs(lastID: lastID)
