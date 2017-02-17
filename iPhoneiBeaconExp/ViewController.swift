@@ -72,6 +72,10 @@ class ViewController: UIViewController {
                 print("Failed to sign up, error=\(error)")
                 return
             }
+            guard (resp as! HTTPURLResponse).statusCode == 200 else {
+                print("Failed to create user, code=\((resp as! HTTPURLResponse).statusCode)")
+                return
+            }
             let userID = String(data: data!, encoding: .utf8)
             print("Created user \(userID)")
             let defaults = UserDefaults.standard

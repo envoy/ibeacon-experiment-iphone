@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var locationManager: CLLocationManager!
     var cbManager: CBCentralManager!
     var region: CLBeaconRegion!
+    var logUploadingQueue: DispatchQueue!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         locationManager = CLLocationManager()
@@ -32,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let osVersion = UIDevice.current.systemVersion
         log("app-launch", "app launched, monitoring \(region!), os_version=\(osVersion)")
         // Override point for customization after application launch.
+
+        logUploadingQueue = DispatchQueue(label: "log-uploading-queue.envoy.com", qos: .userInteractive)
         return true
     }
 
@@ -136,49 +139,57 @@ extension AppDelegate {
     }
 
     func uploadLog() {
-        let defaults = UserDefaults.standard
-        guard let userID = defaults.value(forKey: "user_id") as? String else {
-            print("User not signed up yet, skip log uploading")
-            return
-        }
-        guard defaults.bool(forKey: "log_msg_updated") else {
-            print("Log not updated, skip log uploading")
-            return
-        }
-        guard
-            let msgData = defaults.data(forKey: "log_msg"),
-            msgData.count > 0
-        else {
-            print("No message, skip log uploading")
-            return
-        }
-
-        var bodyData = "\(userID)\n".data(using: .utf8)
-        bodyData?.append(msgData)
-
-        var request = URLRequest(url: Utils.apiURL.appendingPathComponent("upload-log"))
-        request.addValue("binary/octet-stream", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "PUT"
-        request.httpBody = bodyData
-        let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
-            if let error = error {
-                print("Failed to upload logs, error=\(error)")
+        logUploadingQueue.async {
+            let defaults = UserDefaults.standard
+            guard let userID = defaults.value(forKey: "user_id") as? String else {
+                print("User not signed up yet, skip log uploading")
                 return
             }
-            let lastID = String(data: data!, encoding: .utf8)!
-            guard lastID.characters.count > 0 else {
-                print("No updates")
+            guard defaults.bool(forKey: "log_msg_updated") else {
+                print("Log not updated, skip log uploading")
                 return
             }
-            print("Uploaded logs with last_id=\(lastID)")
-            defaults.set(lastID, forKey: "last_log_sync_id")
-            defaults.synchronize()
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "info-update"), object: nil)
+            guard
+                let msgData = defaults.data(forKey: "log_msg"),
+                msgData.count > 0
+            else {
+                print("No message, skip log uploading")
+                return
             }
-            self.purgeLogs(lastID: lastID)
+
+            var bodyData = "\(userID)\n".data(using: .utf8)
+            bodyData?.append(msgData)
+
+            var request = URLRequest(url: Utils.apiURL.appendingPathComponent("upload-log"))
+            request.addValue("binary/octet-stream", forHTTPHeaderField: "Content-Type")
+            request.httpMethod = "PUT"
+            request.httpBody = bodyData
+
+            let completed = DispatchSemaphore(value: 0)
+            let task = URLSession.shared.dataTask(with: request) { (data, resp, error) in
+                defer {
+                    completed.signal()
+                }
+                if let error = error {
+                    print("Failed to upload logs, error=\(error)")
+                    return
+                }
+                let lastID = String(data: data!, encoding: .utf8)!
+                guard lastID.characters.count > 0 else {
+                    print("No updates")
+                    return
+                }
+                print("Uploaded logs with last_id=\(lastID)")
+                defaults.set(lastID, forKey: "last_log_sync_id")
+                defaults.synchronize()
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "info-update"), object: nil)
+                }
+                self.purgeLogs(lastID: lastID)
+            }
+            task.resume()
+            completed.wait()
         }
-        task.resume()
     }
 
     func purgeLogs(lastID: String) {
