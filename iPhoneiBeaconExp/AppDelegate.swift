@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var logUploadingQueue: DispatchQueue!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        logUploadingQueue = DispatchQueue(label: "log-uploading-queue.envoy.com", qos: .userInteractive)
+
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
@@ -35,7 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         log("app-launch", "app launched, monitoring \(region!), os_version=\(osVersion), systemUpTime=\(systemUpTime), options=\(launchOptions ?? nil)")
         // Override point for customization after application launch.
 
-        logUploadingQueue = DispatchQueue(label: "log-uploading-queue.envoy.com", qos: .userInteractive)
         return true
     }
 

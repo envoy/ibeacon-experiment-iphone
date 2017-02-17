@@ -53,7 +53,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func signupButtonTapped(_ sender: Any) {
-        let deviceModel = UIDevice.current.model
+        let deviceModel = UIDevice.current.modelCode
         let osVersion = UIDevice.current.systemVersion
         let userName = usernameTextField.text!
         guard userName.characters.count > 0 else {
