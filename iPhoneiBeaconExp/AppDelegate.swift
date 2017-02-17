@@ -31,7 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         locationManager.startMonitoring(for: region)
 
         let osVersion = UIDevice.current.systemVersion
-        log("app-launch", "app launched, monitoring \(region!), os_version=\(osVersion)")
+        let systemUpTime = ProcessInfo.processInfo.systemUptime
+        log("app-launch", "app launched, monitoring \(region!), os_version=\(osVersion), systemUpTime=\(systemUpTime), options=\(launchOptions ?? nil)")
         // Override point for customization after application launch.
 
         logUploadingQueue = DispatchQueue(label: "log-uploading-queue.envoy.com", qos: .userInteractive)
