@@ -78,10 +78,10 @@ class ViewController: UIViewController {
             }
             let userID = String(data: data!, encoding: .utf8)
             print("Created user \(userID)")
-            let defaults = UserDefaults.standard
-            defaults.set(userID, forKey: "user_id")
-            defaults.synchronize()
             DispatchQueue.main.async {
+                let defaults = UserDefaults.standard
+                defaults.set(userID, forKey: "user_id")
+                defaults.synchronize()
                 self.updateUI()
             }
         }

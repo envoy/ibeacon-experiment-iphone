@@ -218,7 +218,7 @@ extension AppDelegate {
                 }
                 remainLines.insert(line, at: 0)
             }
-            let newMsgs = remainLines.joined(separator: "\n")
+            let newMsgs = remainLines.joined(separator: "\n") + "\n"
             defaults.set(newMsgs.data(using: .utf8), forKey: "log_msg")
             defaults.synchronize()
             print("Purged logs, lastID=\(lastID), originalLogs=\(lines.count), remainLogs=\(remainLines.count)")
