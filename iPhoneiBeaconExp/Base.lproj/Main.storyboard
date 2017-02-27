@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -54,12 +53,20 @@
                                     <action selector="uploadLogButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GHS-GE-V7b"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual Exp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LnQ-w4-HNl">
+                                <rect key="frame" x="143" y="621" width="89" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="LnQ-w4-HNl" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="3gP-Qp-tcK"/>
                             <constraint firstItem="AQd-g8-jmm" firstAttribute="trailing" secondItem="8rS-7M-ntF" secondAttribute="trailing" id="ANv-nN-KcX"/>
                             <constraint firstItem="8rS-7M-ntF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="CLN-rj-Znv"/>
                             <constraint firstItem="AQd-g8-jmm" firstAttribute="top" secondItem="8rS-7M-ntF" secondAttribute="bottom" constant="10" id="EdU-Vc-7OR"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="LnQ-w4-HNl" secondAttribute="bottom" constant="25" id="FEh-BE-HiD"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CIV-Sv-RYE" secondAttribute="bottom" constant="20" id="LOq-hc-Ps6"/>
                             <constraint firstItem="FjV-9r-pzW" firstAttribute="top" secondItem="8rS-7M-ntF" secondAttribute="bottom" constant="20" id="MX8-mA-JPr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yGK-MW-PxX" secondAttribute="trailing" constant="20" id="NTh-tG-f8N"/>

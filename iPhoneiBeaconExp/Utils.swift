@@ -15,7 +15,7 @@ struct Utils {
         if let url = env["API_URL"] {
             return URL(string: url)!
         }
-        return URL(string: "https://ibeacon-experiment-api.herokuapp.com")!
+        return URL(string: "https://manual-ibeacon-experiment-api.herokuapp.com")!
     }()
     
     static func urlEncode(dict: [String: String]) -> String {
