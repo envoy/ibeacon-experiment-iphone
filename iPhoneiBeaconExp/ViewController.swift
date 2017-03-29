@@ -34,7 +34,7 @@ class ViewController: UIViewController {
 
     func updateUI() {
         let defaults = UserDefaults.standard
-        if let userID = defaults.value(forKey: "user_id") as? String {
+        if let userID = defaults.value(forKey: "_exp_user_id") as? String {
             userIDLabel.isHidden = false
             userIDLabel.text = "User ID: \(userID)"
             usernameTextField.isHidden = true
@@ -80,7 +80,7 @@ class ViewController: UIViewController {
             print("Created user \(userID)")
             DispatchQueue.main.async {
                 let defaults = UserDefaults.standard
-                defaults.set(userID, forKey: "user_id")
+                defaults.set(userID, forKey: "_exp_user_id")
                 defaults.synchronize()
                 self.updateUI()
             }

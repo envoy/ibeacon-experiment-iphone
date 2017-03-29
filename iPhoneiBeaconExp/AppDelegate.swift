@@ -147,7 +147,7 @@ extension AppDelegate {
     func uploadLog() {
         logUploadingQueue.async {
             let defaults = UserDefaults.standard
-            guard let userID = defaults.value(forKey: "user_id") as? String else {
+            guard let userID = defaults.value(forKey: "_exp_user_id") as? String else {
                 print("User not signed up yet, skip log uploading")
                 return
             }
